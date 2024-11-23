@@ -1,14 +1,74 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Static Website</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>AI Coded Samples</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 80%; /* Adjusts with screen size */
+      max-width: 600px; /* Maximum width */
+      padding: 20px;
+      border: 2px solid #000;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      box-sizing: border-box; /* Ensures padding is included in the width */
+    }
+    input[type="text"] {
+      width: 100%; /* Full width of the container */
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box; /* Ensures padding is included in the width */
+    }
+    .message {
+      margin-top: 10px;
+      font-size: 1.2em;
+    }
+  </style>
 </head>
 <body>
-    <h1>Static site created w/Copilot helpers</h1>
-    <p>This is a simple static site hosted on GitHub Pages.</p>
-    <script src="script.js"></script>
+  <div class="container">
+    <h1>Malicious Code Detector</h1>
+    <input type="text" id="inputBox" placeholder="Enter your code here">
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    const inputBox = document.getElementById('inputBox');
+    const message = document.getElementById('message');
+
+    inputBox.addEventListener('input', () => {
+      const value = inputBox.value;
+      if (detectMaliciousCode(value)) {
+        message.textContent = 'Malicious code detected!';
+        message.style.color = 'red';
+      } else {
+        message.textContent = 'No malicious code detected.';
+        message.style.color = 'green';
+      }
+    });
+
+    function detectMaliciousCode(input) {
+      const patterns = [
+        /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, // Detects script tags
+        /(\%27)|(\-\-)|(\%23)|(#)/i, // Detects SQL injection patterns without single quotes
+        /(\b(SELECT|UPDATE|DELETE|INSERT|DROP|ALTER|CREATE|TRUNCATE|EXEC|UNION|DECLARE|CAST)\b)/i // Detects SQL keywords
+      ];
+      return patterns.some(pattern => pattern.test(input));
+    }
+  </script>
 </body>
 </html>
